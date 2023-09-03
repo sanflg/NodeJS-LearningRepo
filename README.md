@@ -1,9 +1,9 @@
-#### NodeJS-LearningRepo
+# NodeJS-LearningRepo
 
-### For nodemon on debbuging
-1) npm install -g nodemon
-2) go to .vscode>launch.json and following code
-'''
+# For nodemon on debbuging
+1) Run ```npm install -g nodemon```.
+2) go to ```.vscode>launch.json``` and following code.
+```
 {
     "version": "0.2.0",
     "configurations": [
@@ -18,4 +18,4 @@
         }
     ]
 }
-'''
+```

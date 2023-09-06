@@ -1,24 +1,27 @@
-const http = require('http');
-const routes = require('./routes'); //node attaches the .js extension
+//**** Import ****
+const express = require('express'); //https://expressjs.com https://github.com/expressjs/express
+const bodyParser = require('body-parser');
+const path = require('path');
 
-/****Event Loop:
-    *1- Timers (setTimeout/setInterval)
-    *2- Pending callbacks (pending i/o)
-    *3- Poll (new i/o)
-    *4- Check (execute setImmediate)
-    *5- close callbacks
-    *6- process.exit
-*****/
+const rootDir = require(path.join(__dirname, 'utils', 'path'));
 
-/****Useful Commands:
-    *npm install -g [name] --> will install globally on local
-    *npm install [name] --save-dev -->will install as dev dependency and will not run in dev
-    *npm install [name] --save -->will install as prod dependency
-    *npm start ---> runs the start command in package.json file to start the project
-*****/
+//**** Setting express ****
+const app = express();
 
-//create a server with request and response
-const server = http.createServer(routes.handler);
+app.use(bodyParser.urlencoded({extended: false})); //body parser
+app.use(express.static(path.join(rootDir, 'public'))); //static midleware to public folder
 
-//port to listen to
-server.listen(3000);
+const adminData = require(path.join(rootDir, 'routes', 'admin'));
+const shopRoutes = require(path.join(rootDir, 'routes', 'shop'));
+
+//**** Middlewares ****
+app.use('/admin', adminData.router);
+app.use('/shop', shopRoutes);
+
+//404
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, 'views', '404.html'));
+});
+
+//**** Port ****
+app.listen(3000);
